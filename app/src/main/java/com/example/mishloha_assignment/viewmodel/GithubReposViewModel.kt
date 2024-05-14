@@ -1,7 +1,11 @@
 package com.example.mishloha_assignment.viewmodel
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.mishloha_assignment.data.model.Repository
 import com.example.mishloha_assignment.data.repository.GithubRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -16,6 +20,13 @@ class GithubReposViewModel @Inject constructor(private val repository: GithubRep
 
     private val map: HashMap<String, String> = hashMapOf()
 
+    data class UIState(
+        val repos: Repository? = Repository()
+    )
+
+    var uiState by mutableStateOf(UIState())
+        private set
+
     init {
         initMap()
     }
@@ -24,7 +35,7 @@ class GithubReposViewModel @Inject constructor(private val repository: GithubRep
         viewModelScope.launch {
             val date = getFormattedDateOneMonthAgo()
             map["q"] = "created:>${date}"
-            val repos = repository.getRepos(map)
+            uiState = uiState.copy(repos = repository.getRepos(map).getOrNull())
         }
     }
 
@@ -39,7 +50,6 @@ class GithubReposViewModel @Inject constructor(private val repository: GithubRep
         val calendar = Calendar.getInstance()
         calendar.add(Calendar.MONTH, -1)
         val currentDate = calendar.time
-
         return dateFormat.format(currentDate).toString()
     }
 }

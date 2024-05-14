@@ -58,7 +58,7 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
+    implementation(libs.androidx.material)
 
     // Network
     implementation(libs.retrofit)
@@ -68,8 +68,8 @@ dependencies {
 
     // Hilt
     implementation(libs.hilt)
+    implementation(libs.hilt.navigation.compose)
     kapt(libs.hilt.android.compiler)
-    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
