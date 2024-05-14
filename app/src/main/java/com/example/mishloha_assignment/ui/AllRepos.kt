@@ -44,7 +44,8 @@ fun AllRepos(
             items(response.itemCount) {
                 RepoCard(
                     response[it]?.name,
-                    response[it]?.description
+                    response[it]?.description,
+                    response[it]?.owners?.avatarUrl
                 )
             }
 
@@ -76,7 +77,6 @@ fun AllRepos(
     }
 
     //TODO
-    // Avatar & Glide
     // Details
     // Favorites
     // Search?
