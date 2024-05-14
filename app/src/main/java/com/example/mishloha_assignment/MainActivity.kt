@@ -9,9 +9,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.mishloha_assignment.ui.theme.MishlohaassignmentTheme
+import com.example.mishloha_assignment.viewmodel.GithubReposViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -33,17 +36,16 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
+fun Greeting(name: String,
+             modifier: Modifier = Modifier,
+             viewModel: GithubReposViewModel = hiltViewModel()) {
+
+    LaunchedEffect(key1 = true) {
+        viewModel.loadRepos()
+    }
+
     Text(
             text = "Hello $name!",
             modifier = modifier
     )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    MishlohaassignmentTheme {
-        Greeting("Android")
-    }
 }

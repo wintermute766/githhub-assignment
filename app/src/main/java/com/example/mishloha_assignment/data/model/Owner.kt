@@ -6,16 +6,16 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class Repository (
-    @SerializedName("total_count")
+data class Owner(
+    @SerializedName("login")
     @Expose
-    var totalCount : Int = 0,
+    var login: String,
 
-    @SerializedName("incomplete_results")
+    @SerializedName("avatar_url")
     @Expose
-    var isInCompleteResults : Boolean = false,
+    var avatar_url: String,
 
-    @SerializedName("items")
+    @SerializedName("html_url")
     @Expose
-    var items : List<Item> = emptyList()
+    var html_url: String
 ) : Parcelable

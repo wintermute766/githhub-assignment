@@ -3,6 +3,7 @@ plugins {
     id("kotlin-android")
     alias(libs.plugins.android.application)
     alias(libs.plugins.hilt)
+    id("kotlin-parcelize")
 }
 
 android {
@@ -59,13 +60,16 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
-    // Retrofit
+    // Network
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter)
+    implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
 
     // Hilt
     implementation(libs.hilt)
     kapt(libs.hilt.android.compiler)
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
