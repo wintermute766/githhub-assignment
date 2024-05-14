@@ -13,5 +13,7 @@ data class Item(
     @SerializedName("language") val language: String,
     @SerializedName("license") val licenses: License,
     @SerializedName("owner") val owners: Owner,
-    @SerializedName("stargazers_count") val starCount: Int
+    @SerializedName("stargazers_count") val starCount: Int,
+    @SerializedName("forks_count") val forksCount: Int,
+    @SerializedName("created_at") val createdAt: String
 ) : Parcelable

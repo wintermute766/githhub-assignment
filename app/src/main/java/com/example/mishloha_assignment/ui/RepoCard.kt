@@ -1,19 +1,17 @@
 package com.example.mishloha_assignment.ui
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.AlertDialog
-import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -23,49 +21,55 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.mishloha_assignment.R
+import com.example.mishloha_assignment.data.model.Item
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun RepoCard(
+    response: Item?
+) {
+    val name = response?.name
+    val description = response?.description
+    val avatarUrl = response?.owners?.avatarUrl
+    val language = response?.language
+    val forks = response?.forksCount
+    val createdAt = response?.createdAt
+    val htmlUrl = response?.htmlUrl
+
+    val openDetails = remember { mutableStateOf(false) }
+
+    if (openDetails.value) {
+        MinimalDialog(
+            openDetails,
+            avatarUrl,
+            name,
+            description,
+            language,
+            forks,
+            createdAt,
+            htmlUrl
+        ) {
+            openDetails.value = false
+        }
+    }
+    showCard(openDetails, avatarUrl, name, description)
+}
+
+@Composable
+@OptIn(ExperimentalMaterialApi::class)
+private fun showCard(
+    openDetails: MutableState<Boolean>,
+    avatarUrl: String?,
     name: String?,
     description: String?,
-    avatarUrl: String?
+    language: String? = null,
+    forks: Int? = null,
+    createdAt: String? = null,
+    htmlUrl: String? = null,
 ) {
-    val openDialog = remember { mutableStateOf(false) }
-
-    if (openDialog.value) {
-        AlertDialog(
-            onDismissRequest = {
-                openDialog.value = false
-            },
-            title = {
-                Text(text = "Title")
-            },
-            text = {
-                Text(
-                    "This area typically contains the supportive text " +
-                            "which presents the details regarding the Dialog's purpose."
-                )
-            },
-            buttons = {
-                Row(
-                    modifier = Modifier.padding(all = 8.dp),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Button(
-                        modifier = Modifier.fillMaxWidth(),
-                        onClick = { openDialog.value = false }
-                    ) {
-                        Text("Dismiss")
-                    }
-                }
-            }
-        )
-    }
-
     Card(
         modifier = Modifier
             .padding(10.dp)
@@ -75,7 +79,7 @@ fun RepoCard(
         elevation = 5.dp,
         backgroundColor = MaterialTheme.colors.surface,
         onClick = {
-            openDialog.value = true
+            openDetails.value = true
         }
     ) {
         Row(
@@ -107,7 +111,61 @@ fun RepoCard(
                     style = MaterialTheme.typography.body2,
                     modifier = Modifier.padding(bottom = 4.dp)
                 )
+                language?.let {
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.body2,
+                        modifier = Modifier.padding(bottom = 4.dp)
+                    )
+                }
+                forks?.let {
+                    Text(
+                        text = it.toString(),
+                        style = MaterialTheme.typography.body2,
+                        modifier = Modifier.padding(bottom = 4.dp)
+                    )
+                }
+                createdAt?.let {
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.body2,
+                        modifier = Modifier.padding(bottom = 4.dp)
+                    )
+                }
+                htmlUrl?.let {
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.body2,
+                        modifier = Modifier.padding(bottom = 4.dp)
+                    )
+                }
             }
         }
+    }
+}
+
+@Composable
+fun MinimalDialog(
+    openDetails: MutableState<Boolean>,
+    avatarUrl: String?,
+    name: String?,
+    description: String?,
+    language: String?,
+    forks: Int?,
+    createdAt: String?,
+    htmlUrl: String?,
+    onDismissRequest: () -> Unit
+) {
+    Dialog(onDismissRequest = { onDismissRequest() }) {
+        showCard(
+            openDetails,
+            avatarUrl,
+            name,
+            description,
+            language,
+            forks,
+            createdAt,
+            htmlUrl
+        )
     }
 }

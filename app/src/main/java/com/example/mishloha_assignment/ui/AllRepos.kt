@@ -25,7 +25,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -60,11 +59,7 @@ fun AllRepos(
             contentPadding = PaddingValues(16.dp)
         ) {
             items(response.itemCount) {
-                RepoCard(
-                    response[it]?.name,
-                    response[it]?.description,
-                    response[it]?.owners?.avatarUrl
-                )
+                RepoCard(response[it])
             }
 
             response.apply {
@@ -97,7 +92,6 @@ fun AllRepos(
 
 @Composable
 fun dropDownMenu(viewModel: GithubReposViewModel) {
-    val context = LocalContext.current
     var expanded by remember { mutableStateOf(false) }
 
     Box(
@@ -142,7 +136,7 @@ fun dropDownMenu(viewModel: GithubReposViewModel) {
 }
 
 //TODO
-// Details
+// Details: labels, date format, link
 // Favorites
 // The number of stars
 // no internet
