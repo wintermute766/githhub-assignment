@@ -1,55 +1,40 @@
 package com.example.mishloha_assignment.viewmodel
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mishloha_assignment.data.model.Repository
-import com.example.mishloha_assignment.data.repository.GithubRepository
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import com.example.mishloha_assignment.data.model.Item
+import com.example.mishloha_assignment.data.repository.RepoPagingSource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.util.Calendar
 import javax.inject.Inject
 
 @HiltViewModel
-class GithubReposViewModel @Inject constructor(private val repository: GithubRepository) :
-    ViewModel() {
+class GithubReposViewModel @Inject constructor(
+    private val repoPagingSource: RepoPagingSource
+) : ViewModel() {
 
-    private val map: HashMap<String, String> = hashMapOf()
-
-    data class UIState(
-        val repos: Repository? = Repository()
-    )
-
-    var uiState by mutableStateOf(UIState())
+    private val _repoResponse: MutableStateFlow<PagingData<Item>> =
+        MutableStateFlow(PagingData.empty())
+    var repoResponse = _repoResponse.asStateFlow()
         private set
 
     init {
-        initMap()
-    }
-
-    fun loadRepos() {
         viewModelScope.launch {
-            val date = getFormattedDateOneMonthAgo()
-            map["q"] = "created:>${date}"
-            uiState = uiState.copy(repos = repository.getRepos(map).getOrNull())
+            Pager(
+                config = PagingConfig(
+                    10, enablePlaceholders = true
+                )
+            ) {
+                repoPagingSource
+            }.flow.cachedIn(viewModelScope).collect {
+                _repoResponse.value = it
+            }
         }
-    }
-
-    private fun initMap() {
-        //map["q"] = "created:>"
-        map["sort"] = "stars"
-        map["order"] = "desc"
-    }
-
-    private val dateFormat: DateFormat = SimpleDateFormat("yyyy-MM-dd")
-    private fun getFormattedDateOneMonthAgo(): String {
-        val calendar = Calendar.getInstance()
-        calendar.add(Calendar.MONTH, -1)
-        val currentDate = calendar.time
-        return dateFormat.format(currentDate).toString()
     }
 }
