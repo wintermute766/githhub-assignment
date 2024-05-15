@@ -38,8 +38,9 @@ fun AllRepos(
     viewModel: GithubReposViewModel = hiltViewModel()
 ) {
     LaunchedEffect(Unit) {
-        viewModel.loadReposDay()
+        viewModel.loadReposMonth()
     }
+    val timeLabel = remember { mutableStateOf(TimeLabel.Month) }
 
     val response = viewModel.repoResponse.collectAsLazyPagingItems()
 
@@ -47,9 +48,9 @@ fun AllRepos(
         topBar = {
             TopAppBar(
                 backgroundColor = MaterialTheme.colors.primary,
-                title = { Text(stringResource(R.string.title)) }
+                title = { Text(stringResource(R.string.title) + " " + timeLabel.value.value) }
             )
-            dropDownMenu(viewModel)
+            dropDownMenu(viewModel) { label: TimeLabel -> timeLabel.value = label }
         }
     ) { it ->
         LazyColumn(
@@ -91,11 +92,12 @@ fun AllRepos(
 }
 
 @Composable
-fun dropDownMenu(viewModel: GithubReposViewModel) {
+fun dropDownMenu(viewModel: GithubReposViewModel, changeLabel: (TimeLabel) -> Unit) {
     var expanded by remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
+            .padding(top = 5.dp)
             .fillMaxWidth()
             .wrapContentSize(Alignment.TopEnd)
     ) {
@@ -115,6 +117,7 @@ fun dropDownMenu(viewModel: GithubReposViewModel) {
                 onClick = {
                     viewModel.loadReposDay()
                     expanded = false
+                    changeLabel(TimeLabel.Day)
                 }
             )
             DropdownMenuItem(
@@ -122,6 +125,7 @@ fun dropDownMenu(viewModel: GithubReposViewModel) {
                 onClick = {
                     viewModel.loadReposWeek()
                     expanded = false
+                    changeLabel(TimeLabel.Week)
                 }
             )
             DropdownMenuItem(
@@ -129,15 +133,15 @@ fun dropDownMenu(viewModel: GithubReposViewModel) {
                 onClick = {
                     viewModel.loadReposMonth()
                     expanded = false
+                    changeLabel(TimeLabel.Month)
                 }
             )
         }
     }
 }
 
-//TODO
-// Details: labels, date format, link
-// The number of stars
-// label for 1d 1w 1m
-// Favorites
-// README.md
+enum class TimeLabel(var value: String) {
+    Day("in the last day"),
+    Week("in the last week"),
+    Month("in the last month")
+}

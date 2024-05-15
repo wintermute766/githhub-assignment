@@ -1,10 +1,15 @@
 package com.example.mishloha_assignment.ui
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
@@ -20,12 +25,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.mishloha_assignment.R
 import com.example.mishloha_assignment.data.model.Item
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 @Composable
 fun RepoCard(
@@ -36,17 +46,22 @@ fun RepoCard(
     val avatarUrl = response?.owners?.avatarUrl
     val language = response?.language
     val forks = response?.forksCount
-    val createdAt = response?.createdAt
+    val stars = response?.starCount
+
+    val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm", Locale.getDefault())
+    val createdAt = simpleDateFormat.parse(response?.createdAt ?: "")?.toString()
+
     val htmlUrl = response?.htmlUrl
 
     val openDetails = remember { mutableStateOf(false) }
 
     if (openDetails.value) {
-        MinimalDialog(
+        DetailsDialog(
             openDetails,
             avatarUrl,
             name,
             description,
+            stars,
             language,
             forks,
             createdAt,
@@ -55,7 +70,7 @@ fun RepoCard(
             openDetails.value = false
         }
     }
-    showCard(openDetails, avatarUrl, name, description)
+    showCard(openDetails, avatarUrl, name, description, stars)
 }
 
 @Composable
@@ -65,11 +80,14 @@ private fun showCard(
     avatarUrl: String?,
     name: String?,
     description: String?,
+    stars: Int?,
     language: String? = null,
     forks: Int? = null,
     createdAt: String? = null,
     htmlUrl: String? = null,
 ) {
+    val context = LocalContext.current
+
     Card(
         modifier = Modifier
             .padding(10.dp)
@@ -98,14 +116,22 @@ private fun showCard(
                         .padding(20.dp)
                         .clip(CircleShape)
                 )
-                Text(
-                    text = name ?: "",
-                    style = MaterialTheme.typography.h6,
-                    modifier = Modifier
-                        .padding(bottom = 8.dp)
-                        .fillMaxWidth(),
-                    color = MaterialTheme.colors.onSurface,
-                )
+                Row {
+                    Text(
+                        text = name ?: "",
+                        style = MaterialTheme.typography.h6,
+                        modifier = Modifier
+                            .wrapContentSize(),
+                        color = MaterialTheme.colors.onSurface,
+                    )
+                    Text(
+                        text = "   ★ $stars",
+                        style = MaterialTheme.typography.subtitle1,
+                        modifier = Modifier
+                            .wrapContentSize(),
+                        color = MaterialTheme.colors.onSurface,
+                    )
+                }
                 Text(
                     text = description ?: "",
                     style = MaterialTheme.typography.body2,
@@ -113,30 +139,48 @@ private fun showCard(
                 )
                 language?.let {
                     Text(
-                        text = it,
+                        text = "Language: $it",
                         style = MaterialTheme.typography.body2,
                         modifier = Modifier.padding(bottom = 4.dp)
                     )
                 }
                 forks?.let {
                     Text(
-                        text = it.toString(),
+                        text = "Forks: $it",
                         style = MaterialTheme.typography.body2,
                         modifier = Modifier.padding(bottom = 4.dp)
                     )
                 }
                 createdAt?.let {
                     Text(
-                        text = it,
+                        text = "Created at: $it",
                         style = MaterialTheme.typography.body2,
                         modifier = Modifier.padding(bottom = 4.dp)
                     )
                 }
+                val annotatedString = buildAnnotatedString {
+                    pushStringAnnotation(tag = "url", annotation = htmlUrl ?: "")
+                    withStyle(style = SpanStyle(color = MaterialTheme.colors.primary)) {
+                        append(htmlUrl)
+                    }
+                    pop()
+                }
                 htmlUrl?.let {
                     Text(
-                        text = it,
+                        text = annotatedString,
                         style = MaterialTheme.typography.body2,
-                        modifier = Modifier.padding(bottom = 4.dp)
+                        modifier = Modifier
+                            .padding(bottom = 4.dp)
+                            .clickable {
+                                val intent = Intent(Intent.ACTION_VIEW).apply {
+                                    data = Uri.parse(htmlUrl)
+                                }
+                                try {
+                                    context.startActivity(intent)
+                                } catch (_: ActivityNotFoundException) {
+                                    // Do nothing
+                                }
+                            }
                     )
                 }
             }
@@ -145,11 +189,12 @@ private fun showCard(
 }
 
 @Composable
-fun MinimalDialog(
+fun DetailsDialog(
     openDetails: MutableState<Boolean>,
     avatarUrl: String?,
     name: String?,
     description: String?,
+    stars: Int?,
     language: String?,
     forks: Int?,
     createdAt: String?,
@@ -162,6 +207,7 @@ fun MinimalDialog(
             avatarUrl,
             name,
             description,
+            stars,
             language,
             forks,
             createdAt,

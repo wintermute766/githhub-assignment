@@ -6,13 +6,14 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.lifecycleScope
 import com.example.mishloha_assignment.ui.AllRepos
 import com.example.mishloha_assignment.ui.theme.MishlohaassignmentTheme
@@ -46,6 +47,11 @@ class MainActivity : ComponentActivity() {
         networkMonitor = NetworkMonitor(this)
         networkMonitor.registerNetworkCallback(networkCallback)
         listenConnectionState()
+        if (!networkMonitor.isNetworkAvailable()) {
+            lifecycleScope.launch {
+                networksFlow.emit(ConnectionState.Disconnected)
+            }
+        }
     }
 
     override fun onDestroy() {
@@ -68,7 +74,10 @@ class MainActivity : ComponentActivity() {
                     ConnectionState.Disconnected -> setContent {
                         Column(Modifier.fillMaxWidth()) {
                             Spacer(modifier = Modifier.weight(1f))
-                            Text(text = "No internet connection")
+                            Image(
+                                painter = painterResource(id = R.drawable.no_internet),
+                                contentDescription = ""
+                            )
                             Spacer(modifier = Modifier.weight(1f))
                         }
                     }
