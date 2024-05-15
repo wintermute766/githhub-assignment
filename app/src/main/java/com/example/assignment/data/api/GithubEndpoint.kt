@@ -1,6 +1,6 @@
-package com.example.mishloha_assignment.data.api
+package com.example.assignment.data.api
 
-import com.example.mishloha_assignment.data.model.Repository
+import com.example.assignment.data.model.Repository
 import retrofit2.http.GET
 import retrofit2.http.Query
 import retrofit2.http.QueryMap

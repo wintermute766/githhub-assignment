@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "mishloha-assignment"
+rootProject.name = "assignment"
 include(":app")

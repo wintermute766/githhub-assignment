@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.mishloha_assignment"
+    namespace = "com.example.assignment"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.mishloha_assignment"
+        applicationId = "com.example.assignment"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

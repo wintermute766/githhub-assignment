@@ -1,6 +1,6 @@
-package com.example.mishloha_assignment.di
+package com.example.assignment.di
 
-import com.example.mishloha_assignment.data.api.GithubEndpoint
+import com.example.assignment.data.api.GithubEndpoint
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

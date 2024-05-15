@@ -1,10 +1,10 @@
-package com.example.mishloha_assignment.data.repository
+package com.example.assignment.data.repository
 
 import android.net.http.HttpException
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.example.mishloha_assignment.data.model.Item
-import com.example.mishloha_assignment.data.model.Repository
+import com.example.assignment.data.model.Item
+import com.example.assignment.data.model.Repository
 import java.io.IOException
 import java.text.DateFormat
 import java.text.SimpleDateFormat

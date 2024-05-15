@@ -1,4 +1,4 @@
-package com.example.mishloha_assignment.ui.theme
+package com.example.assignment.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
@@ -24,7 +24,7 @@ private val LightColorPalette = lightColors(
 )
 
 @Composable
-fun MishlohaassignmentTheme(
+fun AssignmentTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable() () -> Unit
 ) {

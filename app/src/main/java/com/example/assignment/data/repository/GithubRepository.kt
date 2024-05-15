@@ -1,7 +1,7 @@
-package com.example.mishloha_assignment.data.repository
+package com.example.assignment.data.repository
 
-import com.example.mishloha_assignment.data.api.GithubEndpoint
-import com.example.mishloha_assignment.data.model.Repository
+import com.example.assignment.data.api.GithubEndpoint
+import com.example.assignment.data.model.Repository
 import javax.inject.Inject
 
 class GithubRepository @Inject constructor(private val githubEndpoint: GithubEndpoint) {

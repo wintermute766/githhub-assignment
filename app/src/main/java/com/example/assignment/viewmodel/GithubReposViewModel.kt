@@ -1,4 +1,4 @@
-package com.example.mishloha_assignment.viewmodel
+package com.example.assignment.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -6,10 +6,10 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.mishloha_assignment.data.model.Item
-import com.example.mishloha_assignment.data.repository.RepoPagingDaySource
-import com.example.mishloha_assignment.data.repository.RepoPagingMonthSource
-import com.example.mishloha_assignment.data.repository.RepoPagingWeekSource
+import com.example.assignment.data.model.Item
+import com.example.assignment.data.repository.RepoPagingDaySource
+import com.example.assignment.data.repository.RepoPagingMonthSource
+import com.example.assignment.data.repository.RepoPagingWeekSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

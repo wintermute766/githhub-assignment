@@ -1,4 +1,4 @@
-package com.example.mishloha_assignment.ui.theme
+package com.example.assignment.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

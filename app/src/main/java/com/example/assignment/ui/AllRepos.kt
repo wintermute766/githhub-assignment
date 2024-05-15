@@ -1,4 +1,4 @@
-package com.example.mishloha_assignment.ui
+package com.example.assignment.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -30,8 +30,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.example.mishloha_assignment.R
-import com.example.mishloha_assignment.viewmodel.GithubReposViewModel
+import com.example.assignment.R
+import com.example.assignment.viewmodel.GithubReposViewModel
 
 @Composable
 fun AllRepos(

@@ -1,4 +1,4 @@
-package com.example.mishloha_assignment
+package com.example.assignment
 
 import android.net.ConnectivityManager.NetworkCallback
 import android.net.Network
@@ -15,9 +15,9 @@ import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.lifecycleScope
-import com.example.mishloha_assignment.ui.AllRepos
-import com.example.mishloha_assignment.ui.theme.MishlohaassignmentTheme
-import com.example.mishloha_assignment.util.NetworkMonitor
+import com.example.assignment.ui.AllRepos
+import com.example.assignment.ui.theme.AssignmentTheme
+import com.example.assignment.util.NetworkMonitor
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -65,7 +65,7 @@ class MainActivity : ComponentActivity() {
             networksFlow.collectLatest {
                 when (it) {
                     ConnectionState.Connected -> setContent {
-                        MishlohaassignmentTheme {
+                        AssignmentTheme {
                             Surface(color = MaterialTheme.colors.background) {
                                 AllRepos()
                             }

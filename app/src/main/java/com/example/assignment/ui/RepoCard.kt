@@ -1,4 +1,4 @@
-package com.example.mishloha_assignment.ui
+package com.example.assignment.ui
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -32,8 +32,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.example.mishloha_assignment.R
-import com.example.mishloha_assignment.data.model.Item
+import com.example.assignment.R
+import com.example.assignment.data.model.Item
 import java.text.SimpleDateFormat
 import java.util.Locale
 

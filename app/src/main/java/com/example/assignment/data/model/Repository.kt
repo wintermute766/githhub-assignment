@@ -1,4 +1,4 @@
-package com.example.mishloha_assignment.data.model
+package com.example.assignment.data.model
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
