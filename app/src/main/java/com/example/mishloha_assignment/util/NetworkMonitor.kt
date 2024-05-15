@@ -1,4 +1,4 @@
-package com.example.mishloha_assignment
+package com.example.mishloha_assignment.util
 
 import android.content.Context
 import android.net.ConnectivityManager
