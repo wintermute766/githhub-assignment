@@ -11,6 +11,8 @@ business logic
 
 #### Implemented features:
 
+- Choose the timeframe for viewing the repository list by using the dropdown menu in the toolbar on
+  the right
 - Infinite scrolling & Paging
 - Dialog with details about the repository with clickable link
 - Image caching by Coil
