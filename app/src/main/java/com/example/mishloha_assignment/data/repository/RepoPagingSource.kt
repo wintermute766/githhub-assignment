@@ -13,17 +13,9 @@ import javax.inject.Inject
 
 abstract class RepoPagingSource : PagingSource<Int, Item>() {
 
-    val map: HashMap<String, String> = hashMapOf()
-
-    init {
-        initMap()
-    }
+    val map: HashMap<String, String> = hashMapOf("sort" to "start", "order" to "desc")
 
     override fun getRefreshKey(state: PagingState<Int, Item>): Int? = state.anchorPosition
-    private fun initMap() {
-        map["sort"] = "stars"
-        map["order"] = "desc"
-    }
 
     companion object {
         private val dateFormat: DateFormat = SimpleDateFormat("yyyy-MM-dd")

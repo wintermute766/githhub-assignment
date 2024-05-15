@@ -137,7 +137,7 @@ fun dropDownMenu(viewModel: GithubReposViewModel) {
 
 //TODO
 // Details: labels, date format, link
-// Favorites
 // The number of stars
+// label for 1d 1w 1m
+// Favorites
 // README.md
-// Search?
